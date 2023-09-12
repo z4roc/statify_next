@@ -1,3 +1,4 @@
+"use client";
 import { useSpotify } from "@/lib/Spotify";
 import {
   Avatar,

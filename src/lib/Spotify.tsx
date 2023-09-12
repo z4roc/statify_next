@@ -1,8 +1,9 @@
-import { AccessToken, SpotifyApi, UserProfile } from "@spotify/web-api-ts-sdk";
+"use client";
+
+import { SpotifyApi, UserProfile } from "@spotify/web-api-ts-sdk";
 import { createContext, useContext, useState } from "react";
 import { create } from "zustand";
 import { useLocalStorage } from "./hooks";
-import { useCookies } from "react-cookie";
 
 interface Spotify {
   api: SpotifyApi;

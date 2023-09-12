@@ -14,8 +14,6 @@ function Page() {
   );
   const [tracksLongTerm, settracksLongTerm] = useState<null | Track[]>(null);
 
-  api.authenticate();
-
   useEffect(() => {
     api.currentUser.topItems("tracks", "short_term").then((tracks) => {
       setTracksShortTerm(tracks.items);
