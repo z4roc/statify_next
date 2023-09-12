@@ -11,11 +11,6 @@ import { useSpotify } from "@/lib/Spotify";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Statify",
-  description: "Statistics for your Spotify account",
-};
-
 export default function RootLayout({
   children,
 }: {
