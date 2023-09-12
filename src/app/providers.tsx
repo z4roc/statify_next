@@ -1,12 +1,12 @@
 "use client";
 
 import { NextUIProvider } from "@nextui-org/react";
-//import { AuthProvider } from "@/lib/Spotify";
+import { CookiesProvider } from "react-cookie";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    //<AuthProvider>
-    <NextUIProvider>{children}</NextUIProvider>
-    //</AuthProvider>
+    <NextUIProvider>
+      <CookiesProvider>{children}</CookiesProvider>
+    </NextUIProvider>
   );
 }

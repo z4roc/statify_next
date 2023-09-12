@@ -16,6 +16,7 @@ const config: Config = {
         primary: "#46774b",
         secondary: "#09160a",
         accent: "#2bc53a",
+        card: "#0d0c0c",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
