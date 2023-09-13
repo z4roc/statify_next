@@ -1,7 +1,8 @@
 "use client";
 
 import { useSpotify } from "@/lib/Spotify";
-import { Card, CardBody, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Card, CardBody, Spinner } from "@nextui-org/react";
+import { Tab, Tabs } from "@nextui-org/tabs";
 import { Track } from "@spotify/web-api-ts-sdk";
 import React, { useEffect, useState } from "react";
 
@@ -32,6 +33,7 @@ function Page() {
       <Tabs
         className="text-text bg-background z-20 justify-center flex"
         color="success"
+        aria-label="Select"
       >
         <Tab key="4Weeks" title="4 Weeks">
           {tracksShortTerm ? (
