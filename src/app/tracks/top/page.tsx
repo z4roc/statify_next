@@ -36,7 +36,7 @@ function Page() {
 
   return (
     <Tabs
-      className="text-text bg-background h-min max-h-screen flex justify-center"
+      className="text-text bg-background mt-16"
       color="success"
       variant="underlined"
     >
@@ -61,7 +61,7 @@ function Page() {
 
 const StatTab = ({ tracks }: { tracks: Track[] }) => {
   return (
-    <div className="overflow-x-scroll bg-background aboslute h-min">
+    <div className="overflow-hidden bg-background aboslute h-min">
       {tracks &&
         tracks?.map((track, index) => {
           return (

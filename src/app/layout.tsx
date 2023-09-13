@@ -19,7 +19,7 @@ export default function RootLayout({
   const { api, setUser } = useSpotify();
   const [loading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (!user)
+    if (api.currentUser)
       api.currentUser.profile().then((profile) => {
         setuser(profile);
       });

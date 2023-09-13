@@ -19,12 +19,13 @@ export default function Home() {
   const { api, setUser } = useSpotify();
 
   useEffect(() => {
-    api.currentUser.profile().then((profile) => {
-      setuser(profile);
-      setIsLoading(false);
-    });
+    if (api.currentUser)
+      api.currentUser.profile().then((profile) => {
+        setuser(profile);
+        setIsLoading(false);
+      });
     return () => setUser(user);
-  }, []);
+  }, [api]);
 
   return !isLoading ? (
     <div className="h-screen font-inter text-text">
@@ -88,13 +89,13 @@ function Dashboard({
   };
 
   return (
-    <div className="flex h-1/2 w-full gap-10 flex-col md:flex-row items-stretch md:items-center p-10 justify-evenly md:justify-center">
+    <div className="flex h-1/2 w-full gap-10 flex-col lg:flex-row items-stretch md:items-center p-10 justify-evenly md:justify-center">
       <div className="flex items-start md:items-center">
         <h1 className="text-4xl sm:text-6xl font-semibold tracking-wider">
           Welcome <p className="shine">{user?.display_name}</p>
         </h1>
       </div>
-      <Card className="border-[.5px] w-fit border-opacity-10 md:max-h-[fit-content] border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20">
+      <Card className="border-[.5px] min-w-fit h-fit max-w-full border-opacity-10 md:max-h-[fit-content] border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20">
         <CardHeader className="flex justify-between">
           <span className="text-white text-xl font-extralight tracking-wide">
             Playing on {playback?.device.name}
@@ -110,7 +111,7 @@ function Dashboard({
               height={100}
               width={100}
             />
-            <div className="text-text flex flex-col justify-evenly w-fit max-w-[50%]">
+            <div className="text-text flex flex-col h-full justify-evenly w-fit max-w-[50%]">
               <h3 className="font-semibold text-lg">{track?.name}</h3>
               <p className="font-normal">
                 {track?.artists.map((e) => e.name).join(", ")}

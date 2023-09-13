@@ -1,9 +1,24 @@
 "use client";
 
-import { SpotifyApi, UserProfile } from "@spotify/web-api-ts-sdk";
+import {
+  AuthorizationCodeWithPKCEStrategy,
+  SpotifyApi,
+  UserProfile,
+} from "@spotify/web-api-ts-sdk";
 import { createContext, useContext, useState } from "react";
 import { create } from "zustand";
 import { useLocalStorage } from "./hooks";
+
+const scopes = [
+  "user-read-private",
+  "user-read-email",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+  "user-read-currently-playing",
+  "user-top-read",
+  "user-read-recently-played",
+  "user-library-read",
+];
 
 interface Spotify {
   api: SpotifyApi;
@@ -28,32 +43,18 @@ const cookie = storage.getItem("auth")
 
 console.log(cookie);
 
+const auth = new AuthorizationCodeWithPKCEStrategy(
+  "93c2de56590146b5a254e0e18e5d4b57",
+  callbackURL,
+  scopes
+);
+
 export const useSpotify = create<Spotify>((set) => ({
-  api: !cookie
-    ? SpotifyApi.withUserAuthorization(
-        "93c2de56590146b5a254e0e18e5d4b57",
-        callbackURL,
-        [
-          "user-read-private",
-          "user-read-email",
-          "user-read-playback-state",
-          "user-modify-playback-state",
-          "user-read-currently-playing",
-          "user-top-read",
-          "user-read-recently-played",
-          "user-library-read",
-        ]
-      )
-    : SpotifyApi.withUserAuthorization(
-        "93c2de56590146b5a254e0e18e5d4b57",
-        cookie
-      ),
+  api: new SpotifyApi(auth),
   user: null,
   setUser: (user: UserProfile) => set({ user }),
   setApi: (api: SpotifyApi) => set({ api }),
 }));
-
-const session = useLocalStorage();
 
 type SpotifyAccount = {
   Api: SpotifyApi;

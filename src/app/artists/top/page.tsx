@@ -29,33 +29,35 @@ export default function Page() {
   }, []);
 
   return (
-    <Tabs
-      className="text-text bg-background h-min max-h-screen flex justify-center"
-      color="success"
-      variant="underlined"
-    >
-      <Tab key="4Weeks" title="4 Weeks">
-        {artistsShortTerm ? (
-          <StatTab artists={artistsShortTerm} />
-        ) : (
-          <div className="flex w-full h-screen items-center justify-center">
-            <Spinner size="lg" />
-          </div>
-        )}
-      </Tab>
-      <Tab key="6Months" title="6 Months">
-        {artistsMediumTerm && <StatTab artists={artistsMediumTerm} />}
-      </Tab>
-      <Tab key="Allltime" title="All Time">
-        {artistsLongTerm && <StatTab artists={artistsLongTerm} />}
-      </Tab>
-    </Tabs>
+    <main className="mt-14">
+      <Tabs
+        className="text-text bg-background  h-min max-h-screen flex justify-center"
+        color="success"
+        variant="underlined"
+      >
+        <Tab key="4Weeks" title="4 Weeks">
+          {artistsShortTerm ? (
+            <StatTab artists={artistsShortTerm} />
+          ) : (
+            <div className="flex w-full h-screen items-center justify-center">
+              <Spinner size="lg" />
+            </div>
+          )}
+        </Tab>
+        <Tab key="6Months" title="6 Months">
+          {artistsMediumTerm && <StatTab artists={artistsMediumTerm} />}
+        </Tab>
+        <Tab key="Allltime" title="All Time">
+          {artistsLongTerm && <StatTab artists={artistsLongTerm} />}
+        </Tab>
+      </Tabs>
+    </main>
   );
 }
 
 function StatTab({ artists }: { artists: Artist[] }) {
   return (
-    <div className="overflow-x-scroll bg-background aboslute h-min">
+    <div className="overflow-hidden bg-background aboslute h-min">
       {artists &&
         artists?.map((artist, index) => {
           return (

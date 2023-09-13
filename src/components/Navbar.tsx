@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import { UserProfile } from "@spotify/web-api-ts-sdk";
 import React, { useState } from "react";
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
   const [IsMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,9 +33,11 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
       <NavbarContent>
         <NavbarMenuToggle className="md:hidden"></NavbarMenuToggle>
         <NavbarBrand>
-          <Link href="/" className="font-semibold text-2xl text-inherit p-1 flex gap-2">
-            
-          <Image src="/Icon.png" alt="Icon" width={25} height={25}/>
+          <Link
+            href="/"
+            className="font-semibold text-2xl text-inherit p-1 flex gap-2"
+          >
+            <Image src="/Icon.png" alt="Icon" width={25} height={25} />
             Statify
           </Link>
         </NavbarBrand>
@@ -70,7 +72,7 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
           <Link href={"/profile"}>
             <Avatar
               isBordered
-              src={user?.images[0].url}
+              src={user?.images[0]?.url ?? "/user.png"}
               color="success"
               size="sm"
             />

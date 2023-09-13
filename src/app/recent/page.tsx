@@ -17,8 +17,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="text-text bg-background h-min aboslute flex justify-center">
-      <div className="flex flex-col p-4 w-full gap-4 overflow-x-scroll">
+    <main className="text-text mt-14 bg-background">
+      <div className="flex flex-col p-4 w-full gap-4 overflow-hidden">
         {recents ? (
           recents.map((recent) => {
             return (
@@ -31,7 +31,7 @@ export default function Page() {
           <Spinner />
         )}
       </div>
-    </div>
+    </main>
   );
 }
 
