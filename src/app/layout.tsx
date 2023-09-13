@@ -7,6 +7,7 @@ import StatifyNavbar from "@/components/Navbar";
 import { UserProfile } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 import { useSpotify } from "@/lib/Spotify";
+import Head from "next/head";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -33,6 +34,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        <title>Statify</title>
+        <meta property="og:title" content="My page title" key="title" />
+      </Head>
       <body className={nunito.className}>
         <StatifyNavbar user={user} />
         <Providers>{children}</Providers>
