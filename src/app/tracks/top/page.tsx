@@ -1,15 +1,8 @@
 "use client";
 
 import { useSpotify } from "@/lib/Spotify";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Spinner,
-  Tab,
-  Tabs,
-} from "@nextui-org/react";
-import { Track, Tracks } from "@spotify/web-api-ts-sdk";
+import { Card, CardBody, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Track } from "@spotify/web-api-ts-sdk";
 import React, { useEffect, useState } from "react";
 
 function Page() {
@@ -35,7 +28,29 @@ function Page() {
   }, []);
 
   return (
-    <Tabs
+    <main className="mt-20">
+      <Tabs
+        className="text-text bg-background z-20 justify-center flex"
+        color="success"
+      >
+        <Tab key="4Weeks" title="4 Weeks">
+          {tracksShortTerm ? (
+            <StatTab tracks={tracksShortTerm} />
+          ) : (
+            <div className="flex w-full h-screen items-center justify-center">
+              <Spinner size="lg" />
+            </div>
+          )}
+        </Tab>
+        <Tab key="6Months" title="6 Months">
+          {tracksMediumTerm && <StatTab tracks={tracksMediumTerm} />}
+        </Tab>
+        <Tab key="Allltime" title="All Time">
+          {tracksLongTerm && <StatTab tracks={tracksLongTerm} />}
+        </Tab>
+      </Tabs>
+    </main>
+    /*<Tabs
       className="text-text bg-background mt-16"
       color="success"
       variant="underlined"
@@ -55,18 +70,18 @@ function Page() {
       <Tab key="Allltime" title="All Time">
         {tracksLongTerm && <StatTab tracks={tracksLongTerm} />}
       </Tab>
-    </Tabs>
+    </Tabs>*/
   );
 }
 
 const StatTab = ({ tracks }: { tracks: Track[] }) => {
   return (
-    <div className="overflow-hidden bg-background aboslute h-min">
+    <div className="overflow-hidden rounded-md bg-background aboslute h-min">
       {tracks &&
         tracks?.map((track, index) => {
           return (
             <Card
-              className="m-2 rounded-md border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
+              className="m-2 bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
               isBlurred
               key={track.id}
             >
