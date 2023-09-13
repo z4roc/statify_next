@@ -27,7 +27,7 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
 
   return (
     <Navbar
-      className="bg-background sticky border-b-[0.2px] border-gray-500"
+      className="bg-background fixed border-b-[0.2px] border-gray-500"
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent>
