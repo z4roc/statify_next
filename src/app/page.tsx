@@ -1,37 +1,20 @@
 "use client";
 
 import DotsLoader from "@/components/DotsLoader";
-import StatifyNavbar from "@/components/Navbar";
 import { useSpotify } from "@/lib/Spotify";
-import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
-  Spinner,
-} from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
 import {
   PlaybackState,
+  Playlist,
   SpotifyApi,
   Track,
   UserProfile,
 } from "@spotify/web-api-ts-sdk";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  //const { userProfile, signIn } = useAuthState();
   const [user, setuser] = useState<null | UserProfile>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [IsMenuOpen, setIsMenuOpen] = useState(false);
 
   const { api, setUser } = useSpotify();
 
@@ -42,21 +25,6 @@ export default function Home() {
     });
     return () => setUser(user);
   }, []);
-
-  const signIn = () => {
-    api.authenticate().then();
-  };
-  //api.currentUser.profile().then((profile) => setUser);
-  //const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
-
-  /*useEffect(() => {
-    if (cookies.auth) {
-      console.log(cookies.auth);
-      //setClient(cookies.auth);
-    }
-  }, []);
-*/
-  const menuItems = ["Artists", "Albums", "Tracks", "Genres"];
 
   return !isLoading ? (
     <div className="h-screen font-inter text-text">
@@ -91,13 +59,20 @@ function Dashboard({
   user: UserProfile;
 }): JSX.Element {
   const [playback, setPlayback] = useState<PlaybackState | null>(null);
-  const [loading, setLoading] = useState(true);
   const [track, setTrack] = useState<Track | null>(null);
+  const [playlist, setplaylist] = useState<Playlist | null>(null);
 
   useEffect(() => {
     api.player.getPlaybackState().then((state) => {
       api.tracks.get(state.item.id).then(setTrack);
       setPlayback(state);
+
+      let arr = state.context?.uri?.split("/") ?? [];
+      let playlistString = arr[arr?.length - 1].split(":");
+
+      let playlistID = playlistString[playlistString.length - 1];
+
+      api.playlists.getPlaylist(playlistID).then(setplaylist);
     });
 
     const id = setInterval(redo, 5000);
@@ -113,11 +88,13 @@ function Dashboard({
   };
 
   return (
-    <div className="flex h-1/2 w-full flex-col items-stretch p-10 justify-evenly ">
-      <div className="flex items-start">
-        <h1 className="text-3xl font-semibold">Welcome {user?.display_name}</h1>
+    <div className="flex h-1/2 w-full gap-10 flex-col md:flex-row items-stretch md:items-center p-10 justify-evenly md:justify-center">
+      <div className="flex items-start md:items-center">
+        <h1 className="text-4xl sm:text-6xl font-semibold tracking-wider">
+          Welcome <p className="shine">{user?.display_name}</p>
+        </h1>
       </div>
-      <Card className="border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20">
+      <Card className="border-[.5px] w-fit border-opacity-10 md:max-h-[fit-content] border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20">
         <CardHeader className="flex justify-between">
           <span className="text-white text-xl font-extralight tracking-wide">
             Playing on {playback?.device.name}
@@ -128,6 +105,7 @@ function Dashboard({
           <div className="flex gap-6">
             <img
               alt="cover"
+              className="rounded-md object-contain"
               src={track?.album.images[0].url}
               height={100}
               width={100}
@@ -139,6 +117,10 @@ function Dashboard({
               </p>
             </div>
           </div>
+
+          <a className="text-xs sm:text-lg text-white p-2" href={playlist?.uri}>
+            from Playlist {playlist?.name}
+          </a>
         </CardBody>
       </Card>
     </div>

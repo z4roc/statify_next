@@ -22,7 +22,7 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
 
   const signIn = () => api.authenticate();
 
-  const menuItems = ["Artists", "Albums", "Tracks", "Genres"];
+  const menuItems = ["Artists", "Tracks", "Recent"];
 
   return (
     <Navbar
@@ -37,20 +37,24 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="hidden">
+      <NavbarContent className="hidden md:flex gap-10" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
+          <Link className="text-text font-semibold" href="/tracks/top">
+            Tracks
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
+          <Link
+            href="/artists/top"
+            className="text-text font-semibold"
+            aria-current="page"
+          >
+            Artists
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link className="text-text font-semibold" href="/recent">
+            Recent
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -74,9 +78,13 @@ export default function StatifyNavbar({ user }: { user: UserProfile | null }) {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link className="w-full" href={`/${item.toLowerCase()}/top`}>
-              {item}
-            </Link>
+            {item != "Recent" ? (
+              <Link className="w-full" href={`/${item.toLowerCase()}/top`}>
+                {item}
+              </Link>
+            ) : (
+              <Link href={`/${item.toLowerCase()}`}>{item}</Link>
+            )}
           </NavbarMenuItem>
         ))}
       </NavbarMenu>

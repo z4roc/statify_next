@@ -1,15 +1,14 @@
 "use client";
 
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { Providers } from "./providers";
 import StatifyNavbar from "@/components/Navbar";
 import { UserProfile } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 import { useSpotify } from "@/lib/Spotify";
 
-const inter = Inter({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -34,7 +33,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={nunito.className}>
         <StatifyNavbar user={user} />
         <Providers>{children}</Providers>
       </body>

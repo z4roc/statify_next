@@ -12,6 +12,14 @@ interface Spotify {
   setApi: any;
 }
 
+let callbackURL = "";
+
+if (process.env.NODE_ENV == "development") {
+  callbackURL = "http://localhost:3000";
+} else if (process.env.NODE_ENV == "production") {
+  callbackURL = "https://statify.zaroc.de";
+}
+
 const storage = useLocalStorage();
 
 const cookie = storage.getItem("auth")
@@ -24,7 +32,7 @@ export const useSpotify = create<Spotify>((set) => ({
   api: !cookie
     ? SpotifyApi.withUserAuthorization(
         "93c2de56590146b5a254e0e18e5d4b57",
-        "http://localhost:3000",
+        callbackURL,
         [
           "user-read-private",
           "user-read-email",
@@ -33,6 +41,7 @@ export const useSpotify = create<Spotify>((set) => ({
           "user-read-currently-playing",
           "user-top-read",
           "user-read-recently-played",
+          "user-library-read",
         ]
       )
     : SpotifyApi.withUserAuthorization(
