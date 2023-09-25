@@ -29,9 +29,9 @@ function Page() {
   }, []);
 
   return (
-    <main className="mt-20">
+    <main className="mt-20 -z-1">
       <Tabs
-        className="text-text bg-background z-20 justify-center flex"
+        className="text-text bg-background z-50 justify-center flex"
         color="success"
         aria-label="Select"
       >
