@@ -18,11 +18,11 @@ export default function Page() {
 
   return (
     <main className="text-text mt-14 bg-background">
-      <div className="flex flex-col p-4 w-full gap-4 overflow-hidden">
+      <div className="flex flex-col p-4 w-full gap-2 overflow-hidden">
         {recents ? (
           recents.map((recent) => {
             return (
-              <div className="h-fit w-full">
+              <div className="h-fit rounded-md w-full">
                 <BasicCard recent={recent} />
               </div>
             );
@@ -38,7 +38,7 @@ export default function Page() {
 function BasicCard({ recent }: { recent: PlayHistory }) {
   return (
     <Card
-      className=" rounded-md border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
+      className="border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
       isBlurred
       key={recent.track.id}
     >

@@ -7,6 +7,11 @@ import React, { useEffect, useState } from "react";
 export default function Page() {
   const { api } = useSpotify();
 
+  const [currentTab, setCurrentTab] = useState({
+    value: "short_term",
+    label: "4 Weeks",
+  });
+
   const [artistsShortTerm, setartistsShortTerm] = useState<null | Artist[]>(
     null
   );
@@ -28,41 +33,74 @@ export default function Page() {
     return () => {};
   }, []);
 
+  const ranges = [
+    { label: "4 weeks", value: "short_term" },
+    { label: "6 Months", value: "medium_term" },
+    { label: "All time", value: "long_term" },
+  ];
+
   return (
-    <main className="mt-14">
-      <Tabs
-        className="text-text bg-background  h-min max-h-screen flex justify-center"
-        color="success"
-        variant="underlined"
-      >
-        <Tab key="4Weeks" title="4 Weeks">
-          {artistsShortTerm ? (
-            <StatTab artists={artistsShortTerm} />
-          ) : (
-            <div className="flex w-full h-screen items-center justify-center">
-              <Spinner size="lg" />
-            </div>
-          )}
-        </Tab>
-        <Tab key="6Months" title="6 Months">
-          {artistsMediumTerm && <StatTab artists={artistsMediumTerm} />}
-        </Tab>
-        <Tab key="Allltime" title="All Time">
-          {artistsLongTerm && <StatTab artists={artistsLongTerm} />}
-        </Tab>
-      </Tabs>
+    <main className="mt-20 -z-1">
+      <div className="w-full flex flex-col items-center justify-center outline-none">
+        <div className="cursor-pointer flex transition-all ease-in-out items-center bg-primary-foreground gap-4 p-2 pl-4 pr-4 rounded-xl">
+          {ranges.map((range) => {
+            return (
+              <div
+                key={range.value}
+                onClick={() =>
+                  setCurrentTab({ value: range.value, label: range.label })
+                }
+                className={
+                  currentTab.value == range.value
+                    ? "bg-white text-black p-2 rounded-xl"
+                    : "p-2"
+                }
+              >
+                <p>{range.label}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className={currentTab.value == "short_term" ? "block" : "hidden"}>
+        {artistsShortTerm ? (
+          <StatTab artists={artistsShortTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
+      <div className={currentTab.value == "medium_term" ? "block" : "hidden"}>
+        {artistsMediumTerm ? (
+          <StatTab artists={artistsMediumTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
+      <div className={currentTab.value == "long_term" ? "block" : "hidden"}>
+        {artistsLongTerm ? (
+          <StatTab artists={artistsLongTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
     </main>
   );
 }
 
 function StatTab({ artists }: { artists: Artist[] }) {
   return (
-    <div className="overflow-hidden bg-background aboslute h-min">
+    <div className="overflow-hidden bg-background aboslute h-min rounded-md">
       {artists &&
         artists?.map((artist, index) => {
           return (
             <Card
-              className="m-2 rounded-md border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
+              className="m-2 border-[.5px] border-opacity-10 border-gray-400 backdrop-blur-sm bg-opacity-5 bg-gradient-to-tr from-[#08252b]/30 to-[#28c890]/20"
               isBlurred
               key={artist.id}
             >

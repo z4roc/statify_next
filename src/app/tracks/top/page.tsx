@@ -1,13 +1,29 @@
 "use client";
 
 import { useSpotify } from "@/lib/Spotify";
-import { Card, CardBody, Spinner } from "@nextui-org/react";
+import { Card, CardBody, Select, SelectItem, Spinner } from "@nextui-org/react";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { Track } from "@spotify/web-api-ts-sdk";
 import React, { useEffect, useState } from "react";
 
+type tracksDef = {
+  short_term: null | Track[];
+  medium_term: null | Track[];
+  long_term: null | Track[];
+};
+
+type kvp = {
+  label: string;
+  value: string;
+};
+
 function Page() {
   const { api } = useSpotify();
+
+  const [currentTab, setCurrentTab] = useState({
+    label: "4 weeks",
+    value: "short_term",
+  });
 
   const [tracksShortTerm, setTracksShortTerm] = useState<null | Track[]>(null);
   const [tracksMediumTerm, settracksMediumTerm] = useState<null | Track[]>(
@@ -25,12 +41,66 @@ function Page() {
     api.currentUser.topItems("tracks", "long_term").then((tracks) => {
       settracksLongTerm(tracks.items);
     });
-    return () => {};
   }, []);
+
+  const ranges = [
+    { label: "4 weeks", value: "short_term" },
+    { label: "6 Months", value: "medium_term" },
+    { label: "All time", value: "long_term" },
+  ];
 
   return (
     <main className="mt-20 -z-1">
-      <Tabs
+      <div className="w-full flex flex-col items-center justify-center outline-none">
+        <div className="cursor-pointer flex transition-all ease-in-out items-center bg-primary-foreground gap-4 p-2 pl-4 pr-4 rounded-xl">
+          {ranges.map((range) => {
+            return (
+              <div
+                key={range.value}
+                onClick={() =>
+                  setCurrentTab({ value: range.value, label: range.label })
+                }
+                className={
+                  currentTab.value == range.value
+                    ? "bg-white text-black p-2 rounded-xl"
+                    : "p-2"
+                }
+              >
+                <p>{range.label}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className={currentTab.value == "short_term" ? "block" : "hidden"}>
+        {tracksShortTerm ? (
+          <StatTab tracks={tracksShortTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
+      <div className={currentTab.value == "medium_term" ? "block" : "hidden"}>
+        {tracksMediumTerm ? (
+          <StatTab tracks={tracksMediumTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
+      <div className={currentTab.value == "long_term" ? "block" : "hidden"}>
+        {tracksLongTerm ? (
+          <StatTab tracks={tracksLongTerm} />
+        ) : (
+          <div className="flex w-full h-screen items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+      </div>
+    </main>
+    /*<Tabs
         className="text-text bg-background z-50 justify-center flex"
         color="success"
         aria-label="Select"
@@ -51,7 +121,7 @@ function Page() {
           {tracksLongTerm && <StatTab tracks={tracksLongTerm} />}
         </Tab>
       </Tabs>
-    </main>
+      */
     /*<Tabs
       className="text-text bg-background mt-16"
       color="success"
